@@ -1,0 +1,21 @@
+from collections import Counter
+
+def cl({infile}, {output}):
+  inpf = open(infile, "r")
+  counter = Counter(inpf.read())
+  if ' ' in counter: del counter[' ']
+  inpf.close()
+  with open(outf, "w") as outf:
+    for key, value in counter.items():
+      outf.write(key + ': ' + str(value)+ '\n')
+
+rule all:
+    input: cl('infile', 'output')
+    output: ".status"
+    shell: "touch {output}"
+
+rule count:
+    input: "input/{file}"
+    output: "output/{file}"
+    run:
+      cl(infile, output)
